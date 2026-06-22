@@ -81,4 +81,32 @@ exports.updateStatus =
     } catch (error) {
       res.status(500).json(error);
     }
+    const Recruiter =
+  require(
+    "../models/Recruiter"
+  );
+
+exports.getProfile =
+  async(req,res)=>{
+
+    try{
+
+      const recruiter =
+        await Recruiter.findById(
+          req.user.id
+        ).select("-password");
+
+      res.json(
+        recruiter
+      );
+
+    }catch(error){
+
+      res.status(500).json(
+        error
+      );
+
+    }
+
+  };
   };

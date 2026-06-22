@@ -30,5 +30,18 @@ router.put(
   auth,
   updateStatus
 );
+const {
+  getCandidates,
+  updateStatus,
+  getProfile
+} = require(
+  "../controllers/recruiterController"
+);
+
+router.get(
+  "/profile",
+  auth,
+  getProfile
+);
 
 module.exports = router;

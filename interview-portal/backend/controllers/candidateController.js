@@ -1,25 +1,47 @@
 const Candidate = require("../models/Candidate");
 const Notification = require("../models/Notification");
 
-// Upload Resume
-exports.uploadResume = async (req, res) => {
+exports.uploadResume = async (
+  req,
+  res
+) => {
   try {
-    const candidate = await Candidate.findById(
-      req.user.id
-    );
+    const candidate =
+      await Candidate.findById(
+        req.user.id
+      );
 
     if (!candidate) {
       return res.status(404).json({
-        message: "Candidate not found",
+        message: "Candidate not found"
       });
     }
 
     if (!req.file) {
       return res.status(400).json({
-        message: "Please upload a resume",
+        message: "Please upload a resume"
       });
     }
 
+    candidate.resume =
+      req.file.path;
+
+    await candidate.save();
+
+    res.status(200).json({
+      success: true,
+      resume:
+        candidate.resume
+    });
+  } catch (error) {
+    console.log(error);
+
+    res.status(500).json({
+      message:
+        "Upload failed"
+    });
+  }
+};
     candidate.resume = req.file.filename;
 
     await candidate.save();

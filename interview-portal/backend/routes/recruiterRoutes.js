@@ -1,6 +1,4 @@
-const express = require(
-  "express"
-);
+const express = require("express");
 
 const router =
   express.Router();
@@ -12,7 +10,8 @@ const auth =
 
 const {
   getCandidates,
-  updateStatus
+  updateStatus,
+  getProfile
 } = require(
   "../controllers/recruiterController"
 );
@@ -24,20 +23,14 @@ router.get(
   getCandidates
 );
 
-// Update status
+// Update candidate status
 router.put(
   "/status/:id",
   auth,
   updateStatus
 );
-const {
-  getCandidates,
-  updateStatus,
-  getProfile
-} = require(
-  "../controllers/recruiterController"
-);
 
+// Recruiter Profile
 router.get(
   "/profile",
   auth,

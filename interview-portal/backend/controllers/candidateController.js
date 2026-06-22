@@ -20,7 +20,7 @@ exports.uploadResume = async (req, res) => {
       });
     }
 
-    candidate.resume = `${process.env.BASE_URL}/uploads/${req.file.filename}`;
+    candidate.resume = req.file.filename;
 
     await candidate.save();
 

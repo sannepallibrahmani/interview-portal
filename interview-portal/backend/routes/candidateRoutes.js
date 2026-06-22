@@ -1,38 +1,33 @@
-const express = require(
-  "express"
+const express = require("express");
+
+const router = express.Router();
+
+const auth = require(
+  "../middleware/authMiddleware"
 );
 
-const router =
-  express.Router();
-
-const auth =
-  require(
-    "../middleware/authMiddleware"
-  );
-
-const upload =
-  require(
-    "../middleware/uploadMiddleware"
-  );
+const upload = require(
+  "../middleware/uploadMiddleware"
+);
 
 const {
   uploadResume,
   getProfile,
   getNotifications,
-  markAsRead
+  markAsRead,
+  deleteResume
 } = require(
   "../controllers/candidateController"
 );
 
-
-// Get profile
+// Profile
 router.get(
   "/profile",
   auth,
   getProfile
 );
 
-// Upload resume
+// Upload Resume
 router.post(
   "/upload-resume",
   auth,
@@ -40,6 +35,14 @@ router.post(
   uploadResume
 );
 
+// Delete Resume
+router.delete(
+  "/resume",
+  auth,
+  deleteResume
+);
+
+// Notifications
 router.get(
   "/notifications",
   auth,
@@ -51,4 +54,5 @@ router.put(
   auth,
   markAsRead
 );
+
 module.exports = router;

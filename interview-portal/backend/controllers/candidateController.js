@@ -2,47 +2,99 @@ const Candidate = require("../models/Candidate");
 const Notification = require("../models/Notification");
 
 // Upload Resume
-exports.uploadResume = async (req, res) => {
+exports.uploadResume = async (
+  req,
+  res
+) => {
   try {
-    const candidate = await Candidate.findById(
-      req.user.id
-    );
+    const candidate =
+      await Candidate.findById(
+        req.user.id
+      );
 
     if (!candidate) {
       return res.status(404).json({
         success: false,
-        message: "Candidate not found",
+        message:
+          "Candidate not found"
       });
     }
 
     if (!req.file) {
       return res.status(400).json({
         success: false,
-        message: "Please upload a resume",
+        message:
+          "Please upload a resume"
       });
     }
 
-    candidate.resume = req.file.path;
+    candidate.resume =
+      req.file.path;
 
     await candidate.save();
 
     res.status(200).json({
       success: true,
-      message: "Resume uploaded successfully",
-      resume: candidate.resume,
+      message:
+        "Resume uploaded successfully",
+      resume:
+        candidate.resume
     });
   } catch (error) {
     console.log(error);
 
     res.status(500).json({
       success: false,
-      message: "Resume upload failed",
+      message:
+        "Resume upload failed"
     });
   }
 };
 
-// Get Candidate Profile
-exports.getProfile = async (req, res) => {
+// Delete Resume
+exports.deleteResume = async (
+  req,
+  res
+) => {
+  try {
+    const candidate =
+      await Candidate.findById(
+        req.user.id
+      );
+
+    if (!candidate) {
+      return res.status(404).json({
+        success: false,
+        message:
+          "Candidate not found"
+      });
+    }
+
+    candidate.resume = "";
+
+    await candidate.save();
+
+    res.status(200).json({
+      success: true,
+      message:
+        "Resume deleted successfully"
+    });
+  } catch (error) {
+    console.log(error);
+
+    res.status(500).json({
+      success: false,
+      message:
+        "Failed to delete resume"
+    });
+  }
+};
+
+// Get Profile
+exports.getProfile = async (
+  req,
+  res
+) => {
   try {
     const candidate =
       await Candidate.findById(
@@ -52,88 +104,35 @@ exports.getProfile = async (req, res) => {
     if (!candidate) {
       return res.status(404).json({
         success: false,
-        message: "Candidate not found",
+        message:
+          "Candidate not found"
       });
     }
 
-    res.status(200).json(candidate);
-  } catch (error) {
-    console.log(error);
-
-    res.status(500).json({
-      success: false,
-      message: "Failed to fetch profile",
-    });
-  }
-};
-
-// Update Profile
-exports.updateProfile = async (
-  req,
-  res
-) => {
-  try {
-    const {
-      name,
-      email,
-      phone,
-      location,
-    } = req.body;
-
-    const candidate =
-      await Candidate.findById(
-        req.user.id
-      );
-
-    if (!candidate) {
-      return res.status(404).json({
-        success: false,
-        message: "Candidate not found",
-      });
-    }
-
-    candidate.name =
-      name || candidate.name;
-
-    candidate.email =
-      email || candidate.email;
-
-    candidate.phone =
-      phone || candidate.phone;
-
-    candidate.location =
-      location ||
-      candidate.location;
-
-    await candidate.save();
-
-    res.status(200).json({
-      success: true,
-      message:
-        "Profile updated successfully",
-      candidate,
-    });
+    res.status(200).json(
+      candidate
+    );
   } catch (error) {
     console.log(error);
 
     res.status(500).json({
       success: false,
       message:
-        "Failed to update profile",
+        "Failed to fetch profile"
     });
   }
 };
 
-// Get Notifications
+// Notifications
 exports.getNotifications =
   async (req, res) => {
     try {
       const notifications =
         await Notification.find({
           candidateId:
-            req.user.id,
+            req.user.id
         }).sort({
-          createdAt: -1,
+          createdAt: -1
         });
 
       res.status(200).json(
@@ -145,12 +144,12 @@ exports.getNotifications =
       res.status(500).json({
         success: false,
         message:
-          "Failed to fetch notifications",
+          "Failed to fetch notifications"
       });
     }
   };
 
-// Mark Notification Read
+// Mark Read
 exports.markAsRead =
   async (req, res) => {
     try {
@@ -158,10 +157,10 @@ exports.markAsRead =
         await Notification.findByIdAndUpdate(
           req.params.id,
           {
-            isRead: true,
+            isRead: true
           },
           {
-            new: true,
+            new: true
           }
         );
 
@@ -169,14 +168,14 @@ exports.markAsRead =
         return res.status(404).json({
           success: false,
           message:
-            "Notification not found",
+            "Notification not found"
         });
       }
 
       res.status(200).json({
         success: true,
         message:
-          "Notification marked as read",
+          "Notification marked as read"
       });
     } catch (error) {
       console.log(error);
@@ -184,7 +183,7 @@ exports.markAsRead =
       res.status(500).json({
         success: false,
         message:
-          "Failed to update notification",
+          "Failed to update notification"
       });
     }
   };
@@ -200,7 +199,7 @@ exports.deleteNotification =
       res.status(200).json({
         success: true,
         message:
-          "Notification deleted",
+          "Notification deleted"
       });
     } catch (error) {
       console.log(error);
@@ -208,7 +207,7 @@ exports.deleteNotification =
       res.status(500).json({
         success: false,
         message:
-          "Failed to delete notification",
+          "Failed to delete notification"
       });
     }
   };

@@ -8,7 +8,7 @@ const storage = new CloudinaryStorage({
   cloudinary,
   params: async (req, file) => ({
     folder: "resumes",
-    resource_type: "auto",
+    resource_type: "raw",
     public_id:
       Date.now() +
       "-" +
